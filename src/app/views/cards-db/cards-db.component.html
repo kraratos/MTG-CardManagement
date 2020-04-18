@@ -1,0 +1,123 @@
+
+<div class="container-fluid">
+    <div class="animated fadeIn">
+        <div class="card">
+            <div class="card-header" style="background-color: #3775a5;color:white">
+                <h4>Ricerca carte possedute</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 offset-md-8">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input class="form-control ng-pristine ng-valid ng-touched" [(ngModel)]="filterQuery" placeholder="Ricerca per nome" type="text" ng-reflect-model="">
+                        <button type ="button" class="btn btn-success" style="margin-left: 5px;" (click)="addCardModal.show()">Aggiungi</button>
+                      </div>
+                    </div>
+                  </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped text-center table-hover table-responsive-lg" [mfData]="card | dataFilter : 'Name':filterQuery" #mf="mfDataTable" [mfRowsOnPage]="10">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Proprietà
+                                        </th>
+                                        <th>
+                                            Possesso
+                                        </th>
+                                        <th>
+                                            Quantità
+                                        </th>
+                                        <th>
+                                            Edit
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let card of mf.data">
+                                        <td class="align-middle">
+                                            {{card.Name}}
+                                        </td>
+                                        <td class="align-middle"> 
+                                            {{card.Possesso}}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{card.Proprieta}}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{card.Quantita}}
+                                        </td>
+                                        <td class="align-middle"> 
+                                            <button class=" btn btn-success icon-pencil icons font-xs" (click)="updateCard(card)"></button>
+                                            <button class=" btn btn-danger icon-trash icons font-xs" (click)="delete(card)"></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                      <td colspan="5">
+                                        <mfBootstrapPaginator ></mfBootstrapPaginator>
+                                      </td>
+                                    </tr>
+                                </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div bsModal #addCardModal="bs-modal" class="modal fade" tabindex="-1" role ="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header primary" style="background-color: #3775a5;color:white">
+                <h3 class="modal-title pull-left">
+                    Aggiungi carta
+                </h3>
+                <button type="button" style="color:white" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                      <label for="staticName" class="col-sm-2 col-form-label">Nome</label>
+                      <div class="col-sm-10">
+                        <ng2-completer #nomeCarta [(ngModel)]="newCarta" name="first" [inputClass]="'form-control'"[datasource]="distinctCard" [minSearchLength]="0" placeholder="Nome" ></ng2-completer>
+                        <!-- <input #nomeCarta type="text"  class="form-control" id="staticName" placeholder="Nome"> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticPossesso" class="col-sm-2 col-form-label">Possesso</label>
+                        <div class="col-sm-10">
+                          <input #nomePossesso type="text"class="form-control" id="staticPossesso" placeholder="Possesso" value="{{selectedCard.Possesso}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="staticProprieta" class="col-sm-2 col-form-label">Proprieta</label>
+                        <div class="col-sm-10">
+                          <input #nomeProprieta type="text" class="form-control" id="staticProprieta" placeholder="Proprieta" value="{{selectedCard.Proprieta}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="staticProprieta" class="col-sm-2 col-form-label" >Quantità</label>
+                        <div class="col-sm-10">
+                          <input #nomeQuantita type="number" class="form-control" id="staticQuantita" step="1" value="{{selectedCard.Quantita}}">
+                        </div>
+                      </div>
+                  </form>
+                <div class ="modal-footer">
+                    <button type="button" class="btn btn-success" (click)="aggiungiCarta()" (click)="addCardModal.hide()">
+                        Conferma
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
